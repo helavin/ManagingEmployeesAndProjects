@@ -1,0 +1,35 @@
+﻿@page
+@model ManagingEmployeesAndProjects.Pages.Subdivisions.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Subdivision</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Subdivision.Id" />
+            <div class="form-group">
+                <label asp-for="Subdivision.Name" class="control-label"></label>
+                <input asp-for="Subdivision.Name" class="form-control" />
+                <span asp-validation-for="Subdivision.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
