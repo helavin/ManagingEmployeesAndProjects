@@ -1,0 +1,69 @@
+﻿@page "{id:int?}"
+@model ManagingEmployeesAndProjects.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Employee @Html.DisplayFor(model => model.Employee.Id)</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Employee.FirstName):
+            @Html.DisplayFor(model => model.Employee.FirstName)
+        </dt>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Employee.LastName):
+            @Html.DisplayFor(model => model.Employee.LastName)
+        </dt>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Employee.Sex):
+            @Html.DisplayFor(model => model.Employee.Sex)
+        </dt>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Employee.Photo):
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Employee.Photo)
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Employee.Subdivision):
+            @Html.DisplayFor(model => model.Employee.Subdivision.Name)
+        </dt>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Employee.ProjectEmployees)
+        </dt>
+        <dd class="col-sm-10">
+            <table class="table">
+                <tr>
+                    <th>Title</th>
+                    <th>Description</th>
+                </tr>
+                @foreach (var item in Model.Employee.ProjectEmployees)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Project.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Project.Description)
+                        </td>
+                    </tr>
+                }
+            </table>
+        </dd>
+
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.Employee.Id">Edit</a> |
+    <a asp-page="./Index">Back to List</a>
+</div>

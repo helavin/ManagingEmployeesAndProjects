@@ -1,0 +1,67 @@
+﻿@page
+@model ManagingEmployeesAndProjects.IndexModel
+
+@{
+    ViewData["Title"] = "List of Emploees";
+}
+
+<h1>Emploees:</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table" border="1">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Employees[0].Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Employees[0].FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Employees[0].LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Employees[0].Sex)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Employees[0].Photo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Employees[0].Subdivision)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Employees)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Sex)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Photo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Subdivision.Name)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
