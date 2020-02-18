@@ -34,7 +34,11 @@ namespace ManagingEmployeesAndProjects.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Subdivision>> GetById(int? id)
         {
-            var subdivision = await _context.Subdivisions.FindAsync(id);
+            var subdivision = //await _context.Subdivisions.FindAsync(id);
+                await _context.Subdivisions
+                .Include(s => s.Employees)
+                .AsNoTracking()
+                .FirstOrDefaultAsync(sb => sb.Id == id);
 
             if (subdivision == null)
             {

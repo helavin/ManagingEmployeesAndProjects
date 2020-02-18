@@ -41,10 +41,10 @@ namespace ManagingEmployeesAndProjects.Controllers
             var employee = //await _context.Employees.FindAsync(id);
                 await _context.Employees
                 .Include(e => e.Subdivision)
-                .Include(pe => pe.ProjectEmployees)
-                .ThenInclude(s => s.Project)
+                .Include(e => e.ProjectEmployees)
+                .ThenInclude(pe => pe.Project)
                 .AsNoTracking()
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(emp => emp.Id == id);
 
             if (employee == null)
             {

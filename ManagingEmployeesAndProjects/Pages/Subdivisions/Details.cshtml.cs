@@ -7,16 +7,19 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using ManagingEmployeesAndProjects.Data;
 using ManagingEmployeesAndProjects.Models;
+using ManagingEmployeesAndProjects.Controllers;
 
 namespace ManagingEmployeesAndProjects.Pages.Subdivisions
 {
     public class DetailsModel : PageModel
     {
-        private readonly ManagingEmployeesAndProjects.Data.ApplicationContext _context;
+        //private readonly ApplicationContext _context;
+        private readonly SubdivisionsController controller;
 
-        public DetailsModel(ManagingEmployeesAndProjects.Data.ApplicationContext context)
+        public DetailsModel(ApplicationContext context)
         {
-            _context = context;
+            //_context = context;
+            controller = new SubdivisionsController(context);
         }
 
         public Subdivision Subdivision { get; set; }
@@ -28,7 +31,10 @@ namespace ManagingEmployeesAndProjects.Pages.Subdivisions
                 return NotFound();
             }
 
-            Subdivision = await _context.Subdivisions.FirstOrDefaultAsync(m => m.Id == id);
+            //Subdivision = await _context.Subdivisions.FirstOrDefaultAsync(m => m.Id == id);
+
+            var subdivision = await controller.GetById(id);
+            Subdivision = subdivision.Value;
 
             if (Subdivision == null)
             {

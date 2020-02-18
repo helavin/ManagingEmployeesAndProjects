@@ -2,25 +2,25 @@
 @model ManagingEmployeesAndProjects.Pages.Subdivisions.IndexModel
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "List of Subdivisions";
 }
 
-<h1>Index</h1>
+    <h1>Subdivisions</h1>
 
 <p>
     <a asp-page="Create">Create New</a>
 </p>
-<table class="table">
+<table class="table" border="1">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Subdivision[0].Name)
+                @Html.DisplayNameFor(model => model.Subdivisions[0].Name)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Subdivision) {
+@foreach (var item in Model.Subdivisions) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
