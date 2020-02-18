@@ -32,7 +32,7 @@ namespace ManagingEmployeesAndProjects.Controllers
 
         // GET: api/Subdivisions/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Subdivision>> GetSubdivision(int id)
+        public async Task<ActionResult<Subdivision>> GetById(int? id)
         {
             var subdivision = await _context.Subdivisions.FindAsync(id);
 
@@ -48,14 +48,15 @@ namespace ManagingEmployeesAndProjects.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutSubdivision(int id, Subdivision subdivision)
+        public async Task<IActionResult> Update(int id, Subdivision subdivision)
         {
             if (id != subdivision.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(subdivision).State = EntityState.Modified;
+            //_context.Entry(subdivision).State = EntityState.Modified;
+            _context.Attach(subdivision).State = EntityState.Modified;
 
             try
             {
@@ -80,17 +81,19 @@ namespace ManagingEmployeesAndProjects.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPost]
-        public async Task<ActionResult<Subdivision>> PostSubdivision(Subdivision subdivision)
+        public async Task<ActionResult<Subdivision>> Create(Subdivision newSubdivision)
         {
-            _context.Subdivisions.Add(subdivision);
+            //_context.Subdivisions.Add(newSubdivision);
+            var entry = _context.Add(new Subdivision());
+            entry.CurrentValues.SetValues(newSubdivision);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetSubdivision", new { id = subdivision.Id }, subdivision);
+            return CreatedAtAction("GetSubdivision", new { id = newSubdivision.Id }, newSubdivision);
         }
 
         // DELETE: api/Subdivisions/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Subdivision>> DeleteSubdivision(int id)
+        public async Task<ActionResult<Subdivision>> Delete(int? id)
         {
             var subdivision = await _context.Subdivisions.FindAsync(id);
             if (subdivision == null)
@@ -98,10 +101,18 @@ namespace ManagingEmployeesAndProjects.Controllers
                 return NotFound();
             }
 
-            _context.Subdivisions.Remove(subdivision);
-            await _context.SaveChangesAsync();
-
-            return subdivision;
+            try
+            {
+                _context.Subdivisions.Remove(subdivision);
+                await _context.SaveChangesAsync();
+                return RedirectToPage("./Index"); //subdivision;
+            }
+            catch (DbUpdateException /* ex */)
+            {
+                //Log the error (uncomment ex variable name and write a log.)
+                return RedirectToAction("./Delete",
+                        new { id, saveChangesError = true });
+            }
         }
 
         private bool SubdivisionExists(int id)
