@@ -5,25 +5,25 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using ManagingEmployeesAndProjects.Models;
 using ManagingEmployeesAndProjects.Data;
+using ManagingEmployeesAndProjects.Models;
 using ManagingEmployeesAndProjects.Controllers;
 
-namespace ManagingEmployeesAndProjects
+namespace ManagingEmployeesAndProjects.Pages.Subdivisions
 {
     public class DeleteModel : PageModel
     {
         //private readonly ApplicationContext _context;
-        private readonly EmployeesController _employeesController;
+        private readonly SubdivisionsController controller;
 
         public DeleteModel(ApplicationContext context)
         {
             //_context = context;
-            _employeesController = new EmployeesController(context);
+            controller = new SubdivisionsController(context);
         }
 
         [BindProperty]
-        public Employee Employee { get; set; }
+        public Subdivision Subdivision { get; set; }
         public string ErrorMessage { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id, bool? saveChangesError = false)
@@ -33,10 +33,11 @@ namespace ManagingEmployeesAndProjects
                 return NotFound();
             }
 
-            var employee = await _employeesController.GetById(id);
-            Employee = employee.Value;
+            //Subdivision = await _context.Subdivisions.FirstOrDefaultAsync(m => m.Id == id);
+            var subdivision = await controller.GetById(id);
+            Subdivision = subdivision.Value;
 
-            if (Employee == null)
+            if (Subdivision == null)
             {
                 return NotFound();
             }
@@ -56,10 +57,19 @@ namespace ManagingEmployeesAndProjects
                 return NotFound();
             }
 
-            //Employee = await _context.Employees.FindAsync(id);
-            var emp = await _employeesController.Delete(id);
+            //Subdivision = await _context.Subdivisions.FindAsync(id);
+
+            //if (Subdivision != null)
+            //{
+            //    _context.Subdivisions.Remove(Subdivision);
+            //    await _context.SaveChangesAsync();
+            //}
+
+            var emp = await controller.Delete(id);
 
             return emp.Result;
+
+            //return RedirectToPage("./Index");
         }
     }
 }
