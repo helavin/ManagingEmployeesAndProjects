@@ -13,12 +13,12 @@ namespace ManagingEmployeesAndProjects
 {
     public class DeleteModel : PageModel
     {
-        private readonly ApplicationContext _context;
+        //private readonly ApplicationContext _context;
         private readonly EmployeesController _employeesController;
 
         public DeleteModel(ApplicationContext context)
         {
-            _context = context;
+            //_context = context;
             _employeesController = new EmployeesController(context);
         }
 

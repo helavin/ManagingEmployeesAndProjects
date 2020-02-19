@@ -7,16 +7,19 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ManagingEmployeesAndProjects.Data;
 using ManagingEmployeesAndProjects.Models;
+using ManagingEmployeesAndProjects.Controllers;
 
 namespace ManagingEmployeesAndProjects.Pages.Subdivisions
 {
     public class CreateModel : PageModel
     {
-        private readonly ManagingEmployeesAndProjects.Data.ApplicationContext _context;
+        //private readonly ApplicationContext _context;
+        private readonly SubdivisionsController controller;
 
-        public CreateModel(ManagingEmployeesAndProjects.Data.ApplicationContext context)
+        public CreateModel(ApplicationContext context)
         {
-            _context = context;
+            //_context = context;
+            controller = new SubdivisionsController(context);
         }
 
         public IActionResult OnGet()
@@ -25,7 +28,7 @@ namespace ManagingEmployeesAndProjects.Pages.Subdivisions
         }
 
         [BindProperty]
-        public Subdivision Subdivision { get; set; }
+        public Subdivision NewSubdivision { get; set; }
 
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
@@ -36,8 +39,10 @@ namespace ManagingEmployeesAndProjects.Pages.Subdivisions
                 return Page();
             }
 
-            _context.Subdivisions.Add(Subdivision);
-            await _context.SaveChangesAsync();
+            //_context.Subdivisions.Add(Subdivision);
+            //await _context.SaveChangesAsync();
+            var subdivision = await controller.Create(NewSubdivision);
+            NewSubdivision = subdivision.Value;
 
             return RedirectToPage("./Index");
         }

@@ -8,16 +8,19 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ManagingEmployeesAndProjects.Data;
 using ManagingEmployeesAndProjects.Models;
+using ManagingEmployeesAndProjects.Controllers;
 
 namespace ManagingEmployeesAndProjects.Pages.Subdivisions
 {
     public class EditModel : PageModel
     {
-        private readonly ManagingEmployeesAndProjects.Data.ApplicationContext _context;
+        //private readonly ApplicationContext _context;
+        private readonly SubdivisionsController controller;
 
-        public EditModel(ManagingEmployeesAndProjects.Data.ApplicationContext context)
+        public EditModel(ApplicationContext context)
         {
-            _context = context;
+            //_context = context;
+            controller = new SubdivisionsController(context);
         }
 
         [BindProperty]
@@ -30,7 +33,11 @@ namespace ManagingEmployeesAndProjects.Pages.Subdivisions
                 return NotFound();
             }
 
-            Subdivision = await _context.Subdivisions.FirstOrDefaultAsync(m => m.Id == id);
+            //Subdivision = await _context.Subdivisions
+            //    .FirstOrDefaultAsync(m => m.Id == id);
+
+            var subdivision = await controller.GetById(id);
+            Subdivision = subdivision.Value;
 
             if (Subdivision == null)
             {
@@ -48,30 +55,11 @@ namespace ManagingEmployeesAndProjects.Pages.Subdivisions
                 return Page();
             }
 
-            _context.Attach(Subdivision).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!SubdivisionExists(Subdivision.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            //_context.Attach(Subdivision).State = EntityState.Modified;
+            await controller.Update(Subdivision.Id, Subdivision);
 
             return RedirectToPage("./Index");
         }
 
-        private bool SubdivisionExists(int id)
-        {
-            return _context.Subdivisions.Any(e => e.Id == id);
-        }
     }
 }
